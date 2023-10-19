@@ -39,8 +39,12 @@
         camera.position.z = 5;
 
         var settings = {
-            springConstant: 0.05,
+            cameraFOV: 75,
+            skyboxSize: 500,
+            springConstant: 0.0003,
             damping: 0.08,
+            randomMotionRange: 10,
+            randomMotionUpdateInterval: 2000,
             setRandomTarget: function() {
                 setRandomTargetPosition();
             }
@@ -52,24 +56,45 @@
 
         function setRandomTargetPosition() {
             targetPosition.set(
-                Math.random() * 10 - 5,
-                Math.random() * 10 - 5,
-                Math.random() * 10 - 5
+                Math.random() * settings.randomMotionRange - settings.randomMotionRange / 2,
+                Math.random() * settings.randomMotionRange - settings.randomMotionRange / 2,
+                Math.random() * settings.randomMotionRange - settings.randomMotionRange / 2
             );
         }
 
         var gui = new dat.GUI();
-        gui.add(settings, 'springConstant', 0, 0.1);
+        gui.add(settings, 'cameraFOV', 1, 180).onChange(function(value) {
+            camera.fov = value;
+            camera.updateProjectionMatrix();
+        });
+        gui.add(settings, 'skyboxSize', 100, 1000).onChange(function(value) {
+            skybox.geometry = new THREE.BoxGeometry(value, value, value);
+        });
+        gui.add(settings, 'springConstant', 0, 0.001);
         gui.add(settings, 'damping', 0, 0.2);
+        gui.add(settings, 'randomMotionRange', 1, 20);
+        gui.add(settings, 'randomMotionUpdateInterval', 100, 5000);
         gui.add(settings, 'setRandomTarget');
+
+        var userInteracting = false;
+
+        var interactionTimeout;
+        window.addEventListener('mousemove', function() {
+            userInteracting = true;
+            clearTimeout(interactionTimeout);
+            interactionTimeout = setTimeout(function() {
+                userInteracting = false;
+                setRandomTargetPosition();
+            }, settings.randomMotionUpdateInterval);
+        });
 
         function animate() {
             requestAnimationFrame(animate);
 
             if (!userInteracting) {
                 var direction = new THREE.Vector3().subVectors(targetPosition, currentPosition);
-                velocity.add(direction.multiplyScalar(settings.springConstant));  // Use GUI parameter
-                velocity.multiplyScalar(1 - settings.damping);  // Use GUI parameter
+                velocity.add(direction.multiplyScalar(settings.springConstant));
+                velocity.multiplyScalar(1 - settings.damping);
 
                 currentPosition.add(velocity);
                 camera.position.copy(currentPosition);
