@@ -24,6 +24,7 @@
         video.src = 'jiggy.mp4';
         video.loop = true;
         video.muted = true;
+        video.playsInline = true;  // Add this line
         video.play();
 
         var videoTexture = new THREE.VideoTexture(video);
