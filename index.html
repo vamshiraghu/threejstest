@@ -8,11 +8,11 @@
         body { margin: 0; }
         canvas { display: block; }
     </style>
-</head>
-<body>
     <script src="https://unpkg.com/three@0.130.0/build/three.js"></script>
     <script src="https://unpkg.com/three@0.130.0/examples/js/controls/OrbitControls.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
+</head>
+<body>
     <script>
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -24,7 +24,6 @@
         video.src = 'jiggy.mp4';
         video.loop = true;
         video.muted = true;
-        video.playsInline = true;  // Add this line
         video.play();
 
         var videoTexture = new THREE.VideoTexture(video);
@@ -39,10 +38,17 @@
 
         camera.position.z = 5;
 
-        var targetPosition = new THREE.Vector3();
+        var settings = {
+            springConstant: 0.05,
+            damping: 0.08,
+            setRandomTarget: function() {
+                setRandomTargetPosition();
+            }
+        };
+
         var currentPosition = camera.position.clone();
-        var lerpValue = 0.005;
-        var userInteracting = false;
+        var targetPosition = new THREE.Vector3();
+        var velocity = new THREE.Vector3();
 
         function setRandomTargetPosition() {
             targetPosition.set(
@@ -52,23 +58,20 @@
             );
         }
 
-        setRandomTargetPosition();
-
-        var interactionTimeout;
-        window.addEventListener('mousemove', function() {
-            userInteracting = true;
-            clearTimeout(interactionTimeout);
-            interactionTimeout = setTimeout(function() {
-                userInteracting = false;
-                setRandomTargetPosition();
-            }, 2000);  // Reset to random movement after 2 seconds of inactivity
-        });
+        var gui = new dat.GUI();
+        gui.add(settings, 'springConstant', 0, 0.1);
+        gui.add(settings, 'damping', 0, 0.2);
+        gui.add(settings, 'setRandomTarget');
 
         function animate() {
             requestAnimationFrame(animate);
 
             if (!userInteracting) {
-                currentPosition.lerp(targetPosition, lerpValue);
+                var direction = new THREE.Vector3().subVectors(targetPosition, currentPosition);
+                velocity.add(direction.multiplyScalar(settings.springConstant));  // Use GUI parameter
+                velocity.multiplyScalar(1 - settings.damping);  // Use GUI parameter
+
+                currentPosition.add(velocity);
                 camera.position.copy(currentPosition);
                 camera.lookAt(scene.position);
             }
