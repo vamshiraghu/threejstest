@@ -1,0 +1,687 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js with OrbitControls</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<script src="https://unpkg.com/three@0.130.0/build/three.js"></script>
+<script src="https://unpkg.com/three@0.130.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+    var scene, camera, renderer, cube, controls;
+
+    init();
+    animate();
+
+    function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+        camera.position.z = 50;
+
+        var geometry = new THREE.BoxGeometry(20, 20, 20);
+        var material = new THREE.MeshNormalMaterial();
+        cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.update();
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        cube.rotation.x += 0.005;
+        cube.rotation.y += 0.005;
+
+        controls.update();
+
+        renderer.render(scene, camera);
+    }
+</script>
+
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js with Procedural Texture and OrbitControls</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<script src="https://unpkg.com/three@0.130.0/build/three.js"></script>
+<script src="https://unpkg.com/three@0.130.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+    var scene, camera, renderer, plane, controls;
+
+    init();
+    animate();
+
+    function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        var geometry = new THREE.PlaneBufferGeometry(5, 5, 32, 32);
+        var material = new THREE.MeshBasicMaterial({
+            map: generateTexture()
+        });
+        plane = new THREE.Mesh(geometry, material);
+        scene.add(plane);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.update();
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+    function generateTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 512;
+        const context = canvas.getContext('2d');
+        
+        const imageData = context.createImageData(canvas.width, canvas.height);
+        const pixels = imageData.data;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+            const color = (0.5 + 0.5 * Math.sin(i / 10000 + Math.sin(i / 5000) * 2)) * 255;
+            pixels[i] = color;     // red
+            pixels[i + 1] = color; // green
+            pixels[i + 2] = color; // blue
+            pixels[i + 3] = 255;   // alpha
+        }
+
+        context.putImageData(imageData, 0, 0);
+        
+        const texture = new THREE.CanvasTexture(canvas);
+        return texture;
+    }
+</script>
+
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinning Cube with Time-Varying Texture</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<script src="https://unpkg.com/three@0.130.0/build/three.js"></script>
+<script src="https://unpkg.com/three@0.130.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+    var scene, camera, renderer, cube, controls;
+
+    init();
+    animate();
+
+    function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Create a cube geometry
+        var geometry = new THREE.BoxGeometry(2, 2, 2);
+
+        // Create a material with a time-varying texture
+        var material = new THREE.MeshBasicMaterial({
+            map: generateTimeVaryingTexture()
+        });
+
+        cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.update();
+    }
+
+    function generateTimeVaryingTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 512;
+        const context = canvas.getContext('2d');
+
+        // Implement your time-varying texture logic here
+        // You can modify the canvas based on the current time
+
+        const texture = new THREE.CanvasTexture(canvas);
+        return texture;
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Update the time-varying texture based on the current time
+
+        cube.rotation.x += 0.005;
+        cube.rotation.y += 0.005;
+
+        controls.update();
+        renderer.render(scene, camera);
+    }
+</script>
+
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube with Texture</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<script src="https://unpkg.com/three@0.130.0/build/three.js"></script>
+
+<script>
+    var scene, camera, renderer, cube;
+
+    init();
+    animate();
+
+    function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Create a cube geometry
+        var geometry = new THREE.BoxGeometry(2, 2, 2);
+
+        // Create a material with your texture (replace 'your_texture_url' with the actual URL)
+        var textureLoader = new THREE.TextureLoader();
+        var texture = textureLoader.load('./jiggy.png');
+        var material = new THREE.MeshBasicMaterial({ map: texture });
+
+        cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        cube.rotation.x += 0.005;
+        cube.rotation.y += 0.005;
+
+        renderer.render(scene, camera);
+    }
+</script>
+
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spinning Cube with Post-processing</title>
+    <style>
+        body { margin: 0; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/postprocessing/EffectComposer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/postprocessing/RenderPass.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/postprocessing/ShaderPass.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/postprocessing/UnrealBloomPass.min.js"></script>
+    
+    <script>
+        // Create a scene
+        const scene = new THREE.Scene();
+        
+        // Create a camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+        
+        // Create a renderer
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        
+        // Create a cube with a texture
+        const geometry = new THREE.BoxGeometry();
+        const textureLoader = new THREE.TextureLoader();
+        const texture = textureLoader.load('jiggy.png'); // Replace 'texture.png' with your texture file path
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+        
+        // Create a GUI for controlling post-processing effects
+        const gui = new dat.GUI();
+        
+        // Create a composer for post-processing
+        const composer = new THREE.EffectComposer(renderer);
+        const renderPass = new THREE.RenderPass(scene, camera);
+        composer.addPass(renderPass);
+        
+        // Add post-processing effects (UnrealBloomPass)
+        const bloomPass = new THREE.UnrealBloomPass();
+        composer.addPass(bloomPass);
+        
+        // Create an object to store GUI parameters
+        const guiParams = {
+            bloomStrength: bloomPass.strength,
+            bloomRadius: bloomPass.radius,
+            bloomThreshold: bloomPass.threshold,
+        };
+        
+        // Add GUI controls
+        gui.add(guiParams, 'bloomStrength', 0, 3).onChange((value) => {
+            bloomPass.strength = value;
+        });
+        gui.add(guiParams, 'bloomRadius', 0, 1).onChange((value) => {
+            bloomPass.radius = value;
+        });
+        gui.add(guiParams, 'bloomThreshold', 0, 1).onChange((value) => {
+            bloomPass.threshold = value;
+        });
+        
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            composer.render();
+        };
+        
+        animate();
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Radial Pattern</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script>
+        let scene, camera, renderer, geometry, material;
+
+        init();
+        animate();
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 10;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Geometry and Material
+            geometry = new THREE.SphereGeometry(0.5, 32, 32);
+            material = new THREE.MeshNormalMaterial();
+
+            // Add multiple spheres in a radial pattern
+            let count = 12; // number of spheres
+            let radius = 5; // radius of the circular pattern
+
+            for (let i = 0; i < count; i++) {
+                let angle = (i / count) * 2 * Math.PI;
+                let x = radius * Math.cos(angle);
+                let y = radius * Math.sin(angle);
+
+                let mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(x, y, 0);
+                scene.add(mesh);
+            }
+
+            // Resize listener
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            scene.rotation.z += 0.01; // rotate the entire scene
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Concentric Radial Pattern</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script>
+        let scene, camera, renderer;
+
+        init();
+        animate();
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 20;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Colors
+            const colors = [
+                new THREE.Color(0x2D3E50),  // Blue
+                new THREE.Color(0x553D67),  // Purple
+                new THREE.Color(0xA87CAC),  // Pink
+                new THREE.Color(0xF25C05),  // Orange
+                new THREE.Color(0xFCD12A)   // Yellow
+            ];
+
+            // Geometry
+            const geometry = new THREE.SphereGeometry(0.2, 32, 32);
+
+            // Create multiple concentric circles
+            const circles = 5;
+            for (let c = 0; c < circles; c++) {
+                const radius = (c + 1) * 2.5; // Increasing radius for concentric circles
+                const count = 12 + c * 6;    // Increasing spheres as we move outward
+                const material = new THREE.MeshBasicMaterial({ color: colors[c % colors.length] });
+
+                for (let i = 0; i < count; i++) {
+                    let angle = (i / count) * 2 * Math.PI;
+                    let x = radius * Math.cos(angle);
+                    let y = radius * Math.sin(angle);
+
+                    let mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.set(x, y, 0);
+                    scene.add(mesh);
+                }
+            }
+
+            // Resize listener
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            scene.rotation.z += 0.005; // rotate the entire scene
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Concentric Radial Pattern with GUI</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+    <script>
+        let scene, camera, renderer;
+        const settings = {
+            circles: 5,
+            baseRadius: 2.5,
+            baseCount: 12,
+            rotationSpeed: 0.005
+        };
+
+        init();
+        animate();
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 20;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Colors
+            const colors = [
+                new THREE.Color(0x2D3E50),  // Blue
+                new THREE.Color(0x553D67),  // Purple
+                new THREE.Color(0xA87CAC),  // Pink
+                new THREE.Color(0xF25C05),  // Orange
+                new THREE.Color(0xFCD12A)   // Yellow
+            ];
+
+            // Create concentric circles
+            createCircles(colors);
+
+            // GUI
+            const gui = new dat.GUI();
+            gui.add(settings, 'circles', 1, 10).step(1).onChange(() => {
+                scene.clear();
+                createCircles(colors);
+            });
+            gui.add(settings, 'baseRadius', 1, 5).onChange(() => {
+                scene.clear();
+                createCircles(colors);
+            });
+            gui.add(settings, 'baseCount', 6, 24).step(1).onChange(() => {
+                scene.clear();
+                createCircles(colors);
+            });
+            gui.add(settings, 'rotationSpeed', 0, 0.02);
+
+            // Resize listener
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function createCircles(colors) {
+            const geometry = new THREE.SphereGeometry(0.2, 32, 32);
+            
+            for (let c = 0; c < settings.circles; c++) {
+                const radius = (c + 1) * settings.baseRadius;
+                const count = settings.baseCount + c * 6;
+                const material = new THREE.MeshBasicMaterial({ color: colors[c % colors.length] });
+
+                for (let i = 0; i < count; i++) {
+                    let angle = (i / count) * 2 * Math.PI;
+                    let x = radius * Math.cos(angle);
+                    let y = radius * Math.sin(angle);
+
+                    let mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.set(x, y, 0);
+                    scene.add(mesh);
+                }
+            }
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            scene.rotation.z += settings.rotationSpeed; 
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html> -->
+
+
+    
+<!-- 
+    
+    I'm in a folder that looks like this when listed from Terminal
+        Last login: Wed Oct 18 23:21:27 on ttys004
+        (base) vamshiraghu@Vamshis-MacBook-Pro-2 threejs % pwd
+        /Users/vamshiraghu/Data/Code/LLMs/GPT4/threejs
+        (base) vamshiraghu@Vamshis-MacBook-Pro-2 threejs % ls  
+        index.html	three.js-master
+        (base) vamshiraghu@Vamshis-MacBook-Pro-2 threejs % 
+
+    Please write me a threejs application using just an index.html meant to be served on localhost from this folder. 
+    It should load a file 'jiggy.png' and extract layers from it using CSS filters, blend modes or the canvas API.
+    Now display this file using threejs. The threejs libraries required should be imported from the local file path as seen in the terminal logs above.
+    The threejs application should create a stack of post processing effects on each layer and use DAT gui to make these parameters editable at runtime.
+    Also use an animation library to animate the values of the post processing effect parameters dynamically in a time varying fashion.
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skybox Video Texture</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <!-- <script src="three.js-master/build/three.min.js"></script>
+    <script src="three.js-master/examples/jsm/controls/OrbitControls.js"></script> -->
+    <script src="https://unpkg.com/three@0.130.0/build/three.js"></script>
+    <script src="https://unpkg.com/three@0.130.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <script>
+        // Create scene, camera, and renderer
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Load video
+        var video = document.createElement('video');
+        video.src = 'jiggy.mp4';
+        video.loop = true;
+        video.muted = true;
+        video.play();
+
+        // Create video texture
+        var videoTexture = new THREE.VideoTexture(video);
+
+        // Create skybox geometry and material
+        var skyboxGeometry = new THREE.BoxGeometry(500, 500, 500);
+        var skyboxMaterial = new THREE.MeshBasicMaterial({ map: videoTexture, side: THREE.DoubleSide });
+        var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+
+        // Add skybox to scene
+        scene.add(skybox);
+        
+        
+
+// rest of your code
+
+       // let controls = new OrbitControls(camera, renderer.domElement);
+
+        // Set up orbit controls
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.minPolarAngle = Math.PI / 4; // Limit vertical rotation
+        controls.maxPolarAngle = 3 * Math.PI / 4; // Limit vertical rotation
+
+        // Set camera position
+        camera.position.z = 5;
+
+        // Render loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // Only required if controls.enableDamping = true, or if controls.autoRotate = true
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
+
