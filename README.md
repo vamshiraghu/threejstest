@@ -1,3 +1,10 @@
+Prompt for GPT 4
+================
+
+"create an app to be served on localhost in a single index.html using the threejs libraries installed locally in the same folder, to display a skybox with a video texture loaded from the local file 'jiggy.mp4'. Map the orbit controls to be able to rotate the camera while staying within the bounding box."
+
+Prompt for Dall E 3
+====================
 UNSYMBOL
 
 I was generated from cytomorphic quantum fabric
